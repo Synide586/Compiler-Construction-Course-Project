@@ -1,0 +1,334 @@
+% This file tests the stability of the lexer buffer (twinBuffer) when processing
+% a large volume of tokens, heavy line counting, and all grammar constructs.
+% Specifically testing TK_FUNID and TK_ID splitting rules.
+
+% ---------------------------------------------------------
+% GLOBAL DEFINITIONS AND TYPES
+% ---------------------------------------------------------
+definetype record #engine as #motor
+definetype union #sensor as #detector
+
+record #engine
+    type int: horsepower;
+    type real: displacement;
+    type int: cylinders;
+endrecord
+
+record #chassis
+    type int: weight;
+    type real: length;
+    type real: width;
+endrecord
+
+union #sensor
+    type int: isactive;
+    type real: voltage;
+endunion
+
+record #vehicle
+    type int: id;
+    type #motor: enginedata;
+    type #chassis: bodydata;
+    type #detector: sensordata;
+endrecord
+
+% ---------------------------------------------------------
+% MATHEMATICAL HELPER FUNCTIONS
+% ---------------------------------------------------------
+% Test Case: _calculate777power (Valid FUNID)
+_calculate777power input parameter list [int b2b2, real c2c2]
+output parameter list [real d2d2];
+    type real: c3c3;
+    c3c3 <--- 1.50E+01;
+    d2d2 <--- (c2c2 * c3c3) + (b2b2 / 2);
+    return [d2d2];
+end
+
+% Test Case: _verify999status (Valid FUNID)
+_verify999status input parameter list [real c2c2]
+output parameter list [int b3b3];
+    if (c2c2 >= 12.00) then
+        b3b3 <--- 1;
+    else
+        b3b3 <--- 0;
+    endif
+    return [b3b3];
+end
+
+% ---------------------------------------------------------
+% MAIN EXECUTION BLOCK
+% ---------------------------------------------------------
+_main
+    % 1. Variable Declarations (Corrected to [b-d][2-7] format)
+    type record #vehicle: b2b2;
+    type record #vehicle: b3b3;
+    type record #vehicle: b4b4;
+    type record #vehicle: b5b5;
+    type record #vehicle: c2c2;
+    
+    type int: d2d2 : global;
+    type int: d3d3;
+    type real: c4c4;
+    type real: c5c5;
+    
+    % 2. Initializations - Vehicle 1
+    b2b2.id <--- 1001;
+    b2b2.enginedata.horsepower <--- 450;
+    b2b2.enginedata.displacement <--- 5.00;
+    b2b2.enginedata.cylinders <--- 8;
+    b2b2.bodydata.weight <--- 2500;
+    b2b2.bodydata.length <--- 15.50;
+    b2b2.bodydata.width <--- 6.00;
+    b2b2.sensordata.isactive <--- 1;
+    
+    % 3. EDGE CASE: TK_FUNID Splitting Logic
+    % Input: _calculate777extra
+    % Expected: TK_FUNID [_calculate777], TK_FIELDID [extra]
+    % Reason: FUNID must stop after the first sequence of numbers.
+    [c4c4] <--- call _calculate777extra with parameters [b2b2.enginedata.horsepower, b2b2.enginedata.displacement];
+
+    % 4. EDGE CASE: TK_ID Splitting Logic
+    % Input: b2v1
+    % Expected: TK_ID [b2], TK_FIELDID [v1]
+    % Reason: 'v' is not in [b-d].
+    b2v1 <--- 1002; 
+
+    % 5. Initializations - Vehicle 3
+    b4b4.id <--- 1003;
+    b4b4.enginedata.horsepower <--- 200;
+    b4b4.enginedata.displacement <--- 2.00;
+    b4b4.enginedata.cylinders <--- 4;
+    b4b4.bodydata.weight <--- 1800;
+    b4b4.bodydata.length <--- 13.00;
+    b4b4.bodydata.width <--- 5.50;
+    b4b4.sensordata.isactive <--- 1;
+    
+    % 6. Initializations - Vehicle 4
+    b5b5.id <--- 1004;
+    b5b5.enginedata.horsepower <--- 600;
+    b5b5.enginedata.displacement <--- 6.20;
+    b5b5.enginedata.cylinders <--- 12;
+    b5b5.bodydata.weight <--- 3000;
+    b5b5.bodydata.length <--- 16.00;
+    b5b5.bodydata.width <--- 6.50;
+    b5b5.sensordata.isactive <--- 1;
+
+    % 7. Iterative Logic and Calculations
+    d2d2 <--- 1;
+    
+    while (d2d2 <= 5)
+        if (d2d2 == 1) then
+            write(b2b2.id);
+            [c4c4] <--- call _calculate777power with parameters [b2b2.enginedata.horsepower, b2b2.enginedata.displacement];
+            write(c4c4);
+        endif
+        
+        if (d2d2 == 2) then
+            write(b3b3.id);
+            [c4c4] <--- call _calculate777power with parameters [b3b3.enginedata.horsepower, b3b3.enginedata.displacement];
+            write(c4c4);
+        endif
+        
+        if (d2d2 == 3) then
+            write(b4b4.id);
+            [c4c4] <--- call _calculate777power with parameters [b4b4.enginedata.horsepower, b4b4.enginedata.displacement];
+            write(c4c4);
+        endif
+        
+        if (d2d2 == 4) then
+            write(b5b5.id);
+            [c4c4] <--- call _calculate777power with parameters [b5b5.enginedata.horsepower, b5b5.enginedata.displacement];
+            write(c4c4);
+        endif
+        
+        if (d2d2 == 5) then
+            write(c2c2.id);
+            [c4c4] <--- call _calculate777power with parameters [c2c2.enginedata.horsepower, c2c2.enginedata.displacement];
+            write(c4c4);
+        endif
+        
+        d2d2 <--- d2d2 + 1;
+    endwhile
+
+    % 8. Massive Boolean Expression Testing
+    % Testing deeply nested logical operators AND and OR across buffer lines
+    if ( (b2b2.enginedata.horsepower > 300) &&& (~(b2b2.bodydata.weight == 2000)) @@@ (c2c2.id < 1000) ) then
+        write(1);
+    else
+        write(0);
+    endif
+
+    % 9. Testing scientific notation at buffer limit
+    c5c5 <--- 1.44444444444E+01;
+    [d3d3] <--- call _verify999status with parameters [c5c5];
+
+    % 10. Massive Arithmetic Expansion (Over 200 lines of logic to stress Twin Buffer)
+    c4c4 <--- ( ( (b2b2.enginedata.displacement * 10.00) + (b3b3.enginedata.displacement * 5.00) ) / 2.00 ) - (1.50E-02 * 100.00);
+    
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 + 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 - 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+    
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 * 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+    
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 / 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 + 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 - 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 * 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 / 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 + 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 - 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 * 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 / 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 + 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 - 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 * 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 / 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 + 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 - 0.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 * 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    d2d2 <--- 0;
+    while (d2d2 < 100)
+        c4c4 <--- c4c4 / 1.01;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    write(c4c4);
+
+    % Additional Padding to ensure total lines > 300
+    % Testing Lexer performance on empty lines and long comments
+    % ---------------------------------------------------------
+    % Padding Line 250
+    % Padding Line 251
+    % Padding Line 252
+    % Padding Line 253
+    % Padding Line 254
+    % Padding Line 255
+    % Padding Line 256
+    % Padding Line 257
+    % Padding Line 258
+    % Padding Line 259
+    % Padding Line 260
+    % ... 
+    % (Imagine 40 more lines of comments here)
+    
+    d2d2 <--- 0;
+    while (d2d2 < 10)
+        c4c4 <--- c4c4 + 1.00;
+        d2d2 <--- d2d2 + 1;
+    endwhile
+    
+    write(c4c4);
+    
+    return;
+end

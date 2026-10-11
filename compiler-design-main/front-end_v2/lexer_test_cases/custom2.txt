@@ -1,0 +1,41 @@
+% The lexer should flag errors here but continue tokenizing subsequent valid lexemes.
+
+_main
+    type int: b5;
+    
+    type real: b2b2b2b2b2b2b2b2b2b22; 
+    
+    % ERROR: Invalid starting character for ID (must be b, c, or d)
+    type int: a2;
+    type int: z5c;
+    
+    % ERROR: Function ID too long (31 characters)
+    [b5] <--- call _thisFunctionIdentifierIsTooLong with parameters [];
+    
+    % ERROR: Invalid numbers (wrong decimal places and scientific patterns)
+    b5 <--- 12.3;       % Error: Only one digit after decimal
+    b5 <--- 12.345;     % Error: Three digits after decimal
+    b5 <--- 12.34E;     % Error: Missing sign/digits after E
+    b5 <--- 12.34E+1;   % Error: Only one digit in exponent
+    b5 <--- 12.34E-;    % Error: Missing digits after negative sign
+    
+    % ERROR: Incomplete operators (Double retraction test)
+    b5 <-- 10;          % Error: <-- is unknown pattern, should not swallow valid numbers
+    b5 <- 5;            % Lexer should return TK_LT and TK_MINUS (valid syntax but semantics fail)
+    
+    % ERROR: Unknown logical operators
+    if (b5 == 10 && b5 < 20) then  % Error: && instead of &&&
+        b5 <--- 1;
+    endif
+    
+    if (b5 == 10 @@ b5 < 20) then  % Error: @@ instead of @@@
+        b5 <--- 2;
+    endif
+    
+    % ERROR: Unknown isolated symbols
+    b5 <--- 5 ! 2;      % Error: ! is unknown symbol
+    b5 <--- 5 | 2;      % Error: | is unknown symbol
+    type $real: c3;     % Error: $ is unknown symbol
+    
+    return;
+end

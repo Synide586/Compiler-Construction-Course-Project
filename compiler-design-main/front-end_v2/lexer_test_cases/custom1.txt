@@ -1,0 +1,43 @@
+% Testing maximum length variable identifiers (exactly 20 characters)
+% Pattern: [b-d][2-7][b-d]*[2-7]*
+
+_functionOne input parameter list [int b2b2b2b2b2b2b2b2b2b2, real c7d7c7d7c7d7c7d7c7d7]
+output parameter list [real d5];
+    % Testing maximum length function identifier (30 chars including underscore)
+    [d5] <--- call _aVeryLongFunctionNameThatIs30 with parameters [b2b2b2b2b2b2b2b2b2b2];
+    return [d5];
+end
+
+_aVeryLongFunctionNameThatIs30 input parameter list [int b3]
+output parameter list [real c3];
+    type real: c4;
+    c4 <--- 12.34;
+    % Testing dense operators and scientific notation boundaries
+    c3 <--- c4*10.00E+23/1.00E-01+b3;
+    return [c3];
+end
+
+% Testing deep nesting and definetype
+definetype record #original as #aliasone
+record #original
+    type int: innerfield;
+endrecord
+
+definetype record #aliasone as #aliastwo
+
+_main
+    type record #aliastwo: d2;
+    type int: c5 : global; 
+    
+    % Testing dense packing of tokens without spaces (Lexer should split them correctly)
+    d2.innerfield<---5;
+    while(d2.innerfield<=10)
+        if(~(d2.innerfield==5)&&&(d2.innerfield!=7))
+        then
+            write(d2.innerfield);
+        endif
+        d2.innerfield<---d2.innerfield+1;
+    endwhile
+    
+    return;
+end
