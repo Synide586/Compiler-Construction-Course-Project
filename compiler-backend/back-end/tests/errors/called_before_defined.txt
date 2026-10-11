@@ -1,0 +1,14 @@
+% EXPECT: function _later is called before it is defined
+_first input parameter list [int b2]
+output parameter list [int b3];
+	[b3] <--- call _later with parameters [b2];
+	return [b3];
+end
+_later input parameter list [int b2]
+output parameter list [int b3];
+	b3 <--- b2;
+	return [b3];
+end
+_main
+	return;
+end

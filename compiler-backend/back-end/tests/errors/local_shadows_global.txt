@@ -1,0 +1,11 @@
+% EXPECT: b2 is already declared as a global variable
+_helper input parameter list [int b3]
+output parameter list [int b4];
+	type int : b2;
+	b4 <--- b3;
+	return [b4];
+end
+_main
+	type int : b2 : global;
+	return;
+end

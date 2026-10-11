@@ -1,0 +1,5 @@
+% EXPECT: type #nothing is not defined
+_main
+	type record #nothing : b2;
+	return;
+end

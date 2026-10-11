@@ -1,0 +1,51 @@
+% Records, nested records, definetype, unions inside records, and record arithmetic
+_scale input parameter list [record #vec b2, real c2]
+output parameter list [record #vec b3];
+	b3 <--- b2 * c2;
+	return [b3];
+end
+
+_main
+	record #vec
+		type real : x;
+		type real : y;
+	endrecord
+	record #seg
+		type #vec : from;
+		type #vec : to;
+	endrecord
+	definetype record #seg as #line
+	union #shape
+		type #vec : pt;
+		type int : radius;
+	endunion
+	record #tagged
+		type int : tag;
+		type #shape : s;
+	endrecord
+	type record #vec : b2;
+	type record #vec : b3;
+	type #line : c3;
+	type record #tagged : d2;
+	type real : c4;
+	b2.x <--- 1.50;
+	b2.y <--- 2.00;
+	c4 <--- 2.00;
+	[b3] <--- call _scale with parameters [b2, c4];
+	write(b3);
+	c3.from <--- b2;
+	c3.to <--- b3;
+	b3 <--- c3.to - c3.from;
+	write(b3);
+	b3 <--- 2 * b3 + b2;
+	write(b3);
+	write(c3);
+	d2.tag <--- 1;
+	d2.s.radius <--- 7;
+	write(d2.s.radius);
+	d2.s.pt <--- b2;
+	write(d2.s.pt.y);
+	b3 <--- b3 / 3;
+	write(b3);
+	return;
+end

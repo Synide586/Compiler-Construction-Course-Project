@@ -1,0 +1,13 @@
+% EXPECT: comparison needs int or real values
+_main
+	record #point
+		type int : x;
+		type int : y;
+	endrecord
+	type record #point : b2;
+	type record #point : b3;
+	if (b2 == b3) then
+		write(1);
+	endif
+	return;
+end

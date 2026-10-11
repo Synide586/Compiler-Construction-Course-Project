@@ -1,0 +1,6 @@
+% EXPECT: Compilation stopped
+_main
+	type int : b2;
+	b2 <--- 5 $ 3;
+	return;
+end

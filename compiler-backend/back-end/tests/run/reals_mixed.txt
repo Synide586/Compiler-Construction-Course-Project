@@ -1,0 +1,23 @@
+% int and real arithmetic, promotion, integer division and exponent notation
+_main
+	type int : b2;
+	type real : c2;
+	type real : c3;
+	b2 <--- 7;
+	c2 <--- b2 / 2;
+	write(c2);
+	c3 <--- b2 / 2.00;
+	write(c3);
+	c3 <--- (c3 - 1.25) * 2 + b2 * 3;
+	write(c3);
+	if (c3 >= 25.50) then
+		write(c3);
+	endif
+	while (b2 > 0)
+		b2 <--- b2 - 3;
+	endwhile
+	write(b2);
+	c2 <--- 1.00E+02;
+	write(c2);
+	return;
+end

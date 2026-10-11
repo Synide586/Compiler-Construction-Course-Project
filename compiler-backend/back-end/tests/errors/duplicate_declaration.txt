@@ -1,0 +1,6 @@
+% EXPECT: variable b2 is declared more than once
+_main
+	type int : b2;
+	type real : b2;
+	return;
+end

@@ -1,0 +1,9 @@
+% EXPECT: output parameter b3 of _noop is never assigned a value
+_noop input parameter list [int b2]
+output parameter list [int b3];
+	write(b2);
+	return [b3];
+end
+_main
+	return;
+end

@@ -1,0 +1,6 @@
+% EXPECT: cannot assign a value of type real to b2
+_main
+	type int : b2;
+	b2 <--- 2.50;
+	return;
+end

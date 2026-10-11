@@ -1,0 +1,6 @@
+% EXPECT: variable b3 is not declared
+_main
+	type int : b2;
+	b2 <--- b3 + 1;
+	return;
+end

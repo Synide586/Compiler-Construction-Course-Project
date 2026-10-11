@@ -1,0 +1,10 @@
+% EXPECT: record #point has no field named z
+_main
+	record #point
+		type int : x;
+		type int : y;
+	endrecord
+	type record #point : b2;
+	b2.z <--- 1;
+	return;
+end

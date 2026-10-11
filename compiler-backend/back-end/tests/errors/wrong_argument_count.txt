@@ -1,0 +1,11 @@
+% EXPECT: expects 2 input parameter(s) but is called with 1
+_add input parameter list [int b2, int b3]
+output parameter list [int b4];
+	b4 <--- b2 + b3;
+	return [b4];
+end
+_main
+	type int : b2;
+	[b2] <--- call _add with parameters [b2];
+	return;
+end
