@@ -45,5 +45,3 @@ $ printf '2\n80.00 90.00 70.00\n60.00 70.00 80.00\n' | ./average
 ## Tests
 
 22 tests: 5 programs that are compiled, run and checked against expected output, and 17 programs with deliberate errors that must be rejected with the right message.
-
-More details: [`front-end_v2/README.md`](front-end_v2/README.md) and [`back-end/README.md`](back-end/README.md).
